@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: mercadona-postgres
+    environment:
+      POSTGRES_DB: mercadona_db
+      POSTGRES_USER: mercadona_user
+      POSTGRES_PASSWORD: mercadona_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./src/main/resources/db/migration:/docker-entrypoint-initdb.d
+    networks:
+      - mercadona-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mercadona_user -d mercadona_db"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  external-stores:
+    image: jameral/stores:latest
+    container_name: mercadona-stores-api
+    ports:
+      - "8080:8080"
+    networks:
+      - mercadona-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mercadona-app
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/mercadona_db
+      SPRING_DATASOURCE_USERNAME: mercadona_user
+      SPRING_DATASOURCE_PASSWORD: mercadona_pass
+      EXTERNAL_STORES_BASE_URL: http://external-stores:8080
+    ports:
+      - "8081:8081"
+    networks:
+      - mercadona-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      external-stores:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  mercadona-network:
+    driver: bridge
