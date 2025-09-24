@@ -11,31 +11,28 @@ API REST para gestión de tiendas, trabajadores y asignaciones por secciones, de
 - **Java 17+** (para desarrollo local)
 - **Maven 3.6+** (para desarrollo local)
 
-### 2️⃣ **Ejecución con Docker**
+### 2️⃣ **Ejecución (Recomendada)**
 
 ```bash
-# Clonar y navegar al proyecto
-cd prueba-tecnica-mercadona
-
-# Levantar todos los servicios
+# 1. Levantar base de datos y API externa
 docker-compose up -d
 
-# Verificar que los servicios estén corriendo
-docker ps
+# 2. Ejecutar aplicación desde terminal
+mvn spring-boot:run
 ```
 
-**Servicios levantados:**
-- 🏪 **API Principal**: http://localhost:8081
-- 🗄️ **PostgreSQL**: puerto 5432
-- 🌐 **API Externa Tiendas**: http://localhost:8080
+**Servicios:**
+- 🏪 **API Principal**: http://localhost:8081 (Maven)
+- 🗄️ **PostgreSQL**: puerto 5432 (Docker)
+- 🌐 **API Externa**: http://localhost:8080 (Docker)
 
-### 3️⃣ **Ejecución Local**
+### 3️⃣ **Ejecución Alternativa**
 
 ```bash
-# Levantar solo la base de datos
+# Solo PostgreSQL (sin API externa)
 docker-compose up -d postgres
 
-# Ejecutar la aplicación
+# Ejecutar aplicación
 mvn spring-boot:run
 ```
 
@@ -176,8 +173,6 @@ Los reportes incluyen direcciones obtenidas de la API externa:
 1. Intentar asignar más horas de las disponibles
 2. Intentar crear códigos de tienda inválidos
 3. Verificar eliminación en cascada
-
----
 
 ## 👨‍💻 Desarrollado
 
