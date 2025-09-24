@@ -2,13 +2,31 @@ package com.mercadona.asignacion.domain;
 
 import com.mercadona.tienda.domain.Seccion;
 import com.mercadona.trabajador.domain.Trabajador;
+import jakarta.persistence.*;
 import java.util.Objects;
 
+@Entity
+@Table(name = "asignaciones")
 public class Asignacion {
 
-    private final Trabajador trabajador;
-    private final Seccion seccion;
-    private final int horasAsignadas;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "trabajador_id", nullable = false)
+    private Trabajador trabajador;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "seccion_id", nullable = false)
+    private Seccion seccion;
+    
+    @Column(name = "horas_asignadas", nullable = false)
+    private int horasAsignadas;
+
+    protected Asignacion() {
+        // Constructor vacío requerido por JPA
+    }
 
     public Asignacion(Trabajador trabajador, Seccion seccion, int horasAsignadas) {
         if (trabajador == null) {
@@ -24,6 +42,10 @@ public class Asignacion {
         this.trabajador = trabajador;
         this.seccion = seccion;
         this.horasAsignadas = horasAsignadas;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public Trabajador getTrabajador() {

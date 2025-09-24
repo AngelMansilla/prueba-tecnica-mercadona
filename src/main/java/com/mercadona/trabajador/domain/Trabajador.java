@@ -1,16 +1,35 @@
 package com.mercadona.trabajador.domain;
 
 import com.mercadona.tienda.domain.Tienda;
+import jakarta.persistence.*;
 import java.util.Objects;
 
+@Entity
+@Table(name = "trabajadores")
 public class Trabajador {
 
     private static final int HORAS_MAXIMAS = 8;
 
-    private final String dni;
-    private final String nombre;
-    private final int horasDisponibles;
-    private final Tienda tienda;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "dni", unique = true, nullable = false, length = 9)
+    private String dni;
+    
+    @Column(name = "nombre", nullable = false)
+    private String nombre;
+    
+    @Column(name = "horas_disponibles", nullable = false)
+    private int horasDisponibles;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "tienda_id", nullable = false)
+    private Tienda tienda;
+    
+    protected Trabajador() {
+        // Constructor vacío requerido por JPA
+    }
     
     public Trabajador(String dni, String nombre, int horasDisponibles, Tienda tienda) {
         if (dni == null || dni.trim().isEmpty()) {
@@ -35,18 +54,22 @@ public class Trabajador {
         this.tienda = tienda;
     }
     
+    public Long getId() {
+        return id;
+    }
+
     public String getDni() {
         return dni;
     }
-    
+
     public String getNombre() {
         return nombre;
     }
-    
+
     public int getHorasDisponibles() {
         return horasDisponibles;
     }
-    
+
     public Tienda getTienda() {
         return tienda;
     }

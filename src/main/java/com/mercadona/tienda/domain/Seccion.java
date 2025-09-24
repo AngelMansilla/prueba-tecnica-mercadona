@@ -1,11 +1,25 @@
 package com.mercadona.tienda.domain;
 
+import jakarta.persistence.*;
 import java.util.Objects;
 
+@Entity
+@Table(name = "secciones")
 public class Seccion {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "nombre", unique = true, nullable = false, length = 100)
+    private String nombre;
     
-    private final String nombre;
-    private final int horasNecesarias;
+    @Column(name = "horas_necesarias", nullable = false)
+    private int horasNecesarias;
+    
+    protected Seccion() {
+        // Constructor vacío requerido por JPA
+    }
     
     public Seccion(String nombre, int horasNecesarias) {
         if (nombre == null || nombre.trim().isEmpty()) {
@@ -17,11 +31,15 @@ public class Seccion {
         this.nombre = nombre;
         this.horasNecesarias = horasNecesarias;
     }
-    
+
+    public Long getId() {
+        return id;
+    }
+
     public String getNombre() {
         return nombre;
     }
-    
+
     public int getHorasNecesarias() {
         return horasNecesarias;
     }
