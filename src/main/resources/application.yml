@@ -27,7 +27,7 @@ spring:
     validate-on-migrate: true
 
 server:
-  port: 8080
+  port: 8081
 
 management:
   endpoints:
@@ -41,7 +41,7 @@ management:
 # External APIs
 external:
   stores:
-    base-url: http://localhost:8082
+    base-url: http://localhost:8080
     timeout: 5000
 
 # API Documentation
