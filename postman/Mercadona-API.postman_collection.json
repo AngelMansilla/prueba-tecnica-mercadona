@@ -368,6 +368,32 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "📊 Estado Completo de Tienda",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/reportes/tienda/T001/estado",
+							"host": ["{{base_url}}"],
+							"path": ["api", "reportes", "tienda", "T001", "estado"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "📈 Cobertura de Horas (Secciones Incompletas)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/reportes/tienda/T001/cobertura",
+							"host": ["{{base_url}}"],
+							"path": ["api", "reportes", "tienda", "T001", "cobertura"]
+						}
+					},
+					"response": []
 				}
 			]
 		},
