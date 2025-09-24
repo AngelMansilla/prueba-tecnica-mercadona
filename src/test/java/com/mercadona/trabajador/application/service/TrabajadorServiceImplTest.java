@@ -177,8 +177,6 @@ class TrabajadorServiceImplTest {
         int horasInvalidas = 0;
         String codigoTienda = "T001";
         
-        when(tiendaRepository.findByCodigo(codigoTienda)).thenReturn(Optional.of(tiendaMock));
-        
         // When & Then
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             trabajadorService.crearTrabajador(dni, nombre, horasInvalidas, codigoTienda);
@@ -195,8 +193,6 @@ class TrabajadorServiceImplTest {
         String nombre = "Juan Perez";
         int horasInvalidas = 9;
         String codigoTienda = "T001";
-        
-        when(tiendaRepository.findByCodigo(codigoTienda)).thenReturn(Optional.of(tiendaMock));
         
         // When & Then
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {

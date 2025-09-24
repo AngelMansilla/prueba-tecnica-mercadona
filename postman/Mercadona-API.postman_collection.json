@@ -452,6 +452,116 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "❌ Tienda - Código formato inválido",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"codigo\": \"X001\",\n    \"nombre\": \"Tienda Inválida\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/tiendas",
+							"host": ["{{base_url}}"],
+							"path": ["api", "tiendas"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "❌ Trabajador - Horas inválidas (0)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"dni\": \"99999999R\",\n    \"nombre\": \"Test Horas 0\",\n    \"horasDisponibles\": 0,\n    \"codigoTienda\": \"T004\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/trabajadores",
+							"host": ["{{base_url}}"],
+							"path": ["api", "trabajadores"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "❌ Trabajador - Horas inválidas (9)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"dni\": \"88888888T\",\n    \"nombre\": \"Test Horas 9\",\n    \"horasDisponibles\": 9,\n    \"codigoTienda\": \"T004\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/trabajadores",
+							"host": ["{{base_url}}"],
+							"path": ["api", "trabajadores"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "❌ Asignación - Exceder horas trabajador",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"dniTrabajador\": \"71234567A\",\n    \"nombreSeccion\": \"Droguería\",\n    \"horasAsignadas\": 8\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/asignaciones",
+							"host": ["{{base_url}}"],
+							"path": ["api", "asignaciones"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "❌ Asignación - Duplicada trabajador-sección",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"dniTrabajador\": \"71234567A\",\n    \"nombreSeccion\": \"Horno\",\n    \"horasAsignadas\": 2\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/asignaciones",
+							"host": ["{{base_url}}"],
+							"path": ["api", "asignaciones"]
+						}
+					},
+					"response": []
 				}
 			]
 		}
@@ -459,7 +569,7 @@
 	"variable": [
 		{
 			"key": "base_url",
-			"value": "http://localhost:8080",
+			"value": "http://localhost:8081",
 			"type": "string"
 		}
 	]
