@@ -144,9 +144,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/api/trabajadores/44444444R",
+							"raw": "{{base_url}}/api/trabajadores/71234567A",
 							"host": ["{{base_url}}"],
-							"path": ["api", "trabajadores", "44444444R"]
+							"path": ["api", "trabajadores", "71234567A"]
 						}
 					},
 					"response": []
@@ -214,12 +214,12 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"dni\": \"44444444R\",\n    \"nombre\": \"Ana López García ACTUALIZADA\",\n    \"horasDisponibles\": 6,\n    \"codigoTienda\": \"T004\"\n}"
+							"raw": "{\n    \"dni\": \"71234567A\",\n    \"nombre\": \"Ana López García ACTUALIZADA\",\n    \"horasDisponibles\": 6,\n    \"codigoTienda\": \"T004\"\n}"
 						},
 						"url": {
-							"raw": "{{base_url}}/api/trabajadores/44444444R",
+							"raw": "{{base_url}}/api/trabajadores/71234567A",
 							"host": ["{{base_url}}"],
-							"path": ["api", "trabajadores", "44444444R"]
+							"path": ["api", "trabajadores", "71234567A"]
 						}
 					},
 					"response": []
@@ -270,9 +270,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/api/asignaciones/trabajador/44444444R",
+							"raw": "{{base_url}}/api/asignaciones/trabajador/71234567A",
 							"host": ["{{base_url}}"],
-							"path": ["api", "asignaciones", "trabajador", "44444444R"]
+							"path": ["api", "asignaciones", "trabajador", "71234567A"]
 						}
 					},
 					"response": []
@@ -318,9 +318,9 @@
 							"raw": "{\n    \"nuevasHoras\": 6\n}"
 						},
 						"url": {
-							"raw": "{{base_url}}/api/asignaciones/trabajador/44444444R/seccion/Horno",
+							"raw": "{{base_url}}/api/asignaciones/trabajador/71234567A/seccion/Horno",
 							"host": ["{{base_url}}"],
-							"path": ["api", "asignaciones", "trabajador", "44444444R", "seccion", "Horno"]
+							"path": ["api", "asignaciones", "trabajador", "71234567A", "seccion", "Horno"]
 						}
 					},
 					"response": []

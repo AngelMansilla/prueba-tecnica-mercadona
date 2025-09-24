@@ -89,9 +89,9 @@ class TiendaRepositoryTest {
     @Test
     void deberiaBuscarPorNombreParcial() {
         // Given
-        tiendaRepository.save(new Tienda("T004", "Tienda Centro Barcelona"));
-        tiendaRepository.save(new Tienda("T005", "Tienda Norte Barcelona"));
-        tiendaRepository.save(new Tienda("T006", "Tienda Sur Madrid"));
+        tiendaRepository.save(new Tienda("T901", "Tienda Centro Barcelona"));
+        tiendaRepository.save(new Tienda("T902", "Tienda Norte Barcelona"));
+        tiendaRepository.save(new Tienda("T903", "Tienda Sur Madrid"));
         
         // When
         List<Tienda> tiendasBarcelona = tiendaRepository.findByNombreContainingIgnoreCase("barcelona");

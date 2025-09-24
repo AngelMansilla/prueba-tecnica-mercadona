@@ -130,33 +130,40 @@ class TrabajadorRepositoryTest {
 
     @Test
     void deberiaBuscarPorHorasDisponibles() {
-        // Given
-        trabajadorRepository.save(new Trabajador("Y1234567X", "Trabajador 4h", 4, tiendaCentro));
-        trabajadorRepository.save(new Trabajador("X1234567L", "Trabajador 6h", 6, tiendaCentro));
-        trabajadorRepository.save(new Trabajador("77777777B", "Trabajador 8h", 8, tiendaNorte));
+        // Given - Contar estado inicial
+        int countInicialMinimo6h = trabajadorRepository.findByHorasDisponiblesGreaterThanEqual(6).size();
+        
+        // Añadir datos específicos del test
+        trabajadorRepository.save(new Trabajador("Y1234567X", "Trabajador 4h", 4, tiendaCentro)); 
+        trabajadorRepository.save(new Trabajador("X1234567L", "Trabajador 6h", 6, tiendaCentro)); 
+        trabajadorRepository.save(new Trabajador("77777777B", "Trabajador 8h", 8, tiendaNorte)); 
         
         // When
         List<Trabajador> trabajadoresConMinimo6h = trabajadorRepository.findByHorasDisponiblesGreaterThanEqual(6);
         
-        // Then
-        assertEquals(2, trabajadoresConMinimo6h.size());
+        // Then - Verificar incremento exacto (+2 trabajadores >= 6h)
+        assertEquals(countInicialMinimo6h + 2, trabajadoresConMinimo6h.size());
         assertTrue(trabajadoresConMinimo6h.stream().allMatch(t -> t.getHorasDisponibles() >= 6));
     }
 
     @Test
     void deberiaBuscarPorNombreParcial() {
-        // Given
-        trabajadorRepository.save(new Trabajador("12345678Z", "Juan Carlos Lopez", 8, tiendaCentro));
-        trabajadorRepository.save(new Trabajador("Y1234567X", "Ana Maria Gonzalez", 7, tiendaNorte));
-        trabajadorRepository.save(new Trabajador("77777777B", "Carlos Rodriguez", 6, tiendaCentro));
+        // Given - Contar estado inicial
+        int countInicialCarlos = trabajadorRepository.findByNombreContainingIgnoreCase("carlos").size();
+        int countInicialAna = trabajadorRepository.findByNombreContainingIgnoreCase("ANA").size();
+        
+        // Añadir datos específicos del test
+        trabajadorRepository.save(new Trabajador("12345678Z", "Juan Carlos Lopez", 8, tiendaCentro)); // Contiene "carlos"
+        trabajadorRepository.save(new Trabajador("Y1234567X", "Ana Maria Gonzalez", 7, tiendaNorte)); // Contiene "ANA"
+        trabajadorRepository.save(new Trabajador("77777777B", "Carlos Rodriguez", 6, tiendaCentro)); // Contiene "carlos"
         
         // When
         List<Trabajador> trabajadoresCarlos = trabajadorRepository.findByNombreContainingIgnoreCase("carlos");
         List<Trabajador> trabajadoresAna = trabajadorRepository.findByNombreContainingIgnoreCase("ANA");
         
-        // Then
-        assertEquals(2, trabajadoresCarlos.size());
-        assertEquals(1, trabajadoresAna.size());
+        // Then - Verificar incrementos exactos
+        assertEquals(countInicialCarlos + 2, trabajadoresCarlos.size()); // +2 con "carlos"
+        assertEquals(countInicialAna + 1, trabajadoresAna.size()); // +1 con "ANA"
     }
 
     @Test
