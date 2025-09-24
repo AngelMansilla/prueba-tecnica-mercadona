@@ -9,6 +9,8 @@ import com.mercadona.tienda.domain.Seccion;
 import com.mercadona.tienda.domain.Tienda;
 import com.mercadona.tienda.infrastructure.repository.TiendaRepository;
 import com.mercadona.trabajador.domain.Trabajador;
+import com.mercadona.external.port.ExternalStoreService;
+import com.mercadona.external.dto.ExternalStoreDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,6 +32,9 @@ class ReporteServiceImplTest {
     
     @Mock
     private AsignacionRepository asignacionRepository;
+    
+    @Mock
+    private ExternalStoreService externalStoreService;
 
     private ReporteService reporteService;
 
@@ -41,7 +46,7 @@ class ReporteServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        reporteService = new ReporteServiceImpl(tiendaRepository, asignacionRepository);
+        reporteService = new ReporteServiceImpl(tiendaRepository, asignacionRepository, externalStoreService);
         
         // Datos de prueba
         tienda = new Tienda("T001", "Tienda Centro");
@@ -64,6 +69,8 @@ class ReporteServiceImplTest {
         
         when(tiendaRepository.findByCodigo(codigoTienda)).thenReturn(Optional.of(tienda));
         when(asignacionRepository.findByCodigoTienda(codigoTienda)).thenReturn(asignaciones);
+        when(externalStoreService.buscarTiendaPorNombre("Tienda Centro"))
+            .thenReturn(Optional.of(new ExternalStoreDto(1L, "Tienda Centro", "Calle Falsa 123", "Madrid")));
         
         // When
         EstadoTiendaDto resultado = reporteService.obtenerEstadoTienda(codigoTienda);
@@ -72,6 +79,7 @@ class ReporteServiceImplTest {
         assertNotNull(resultado);
         assertEquals("T001", resultado.codigoTienda());
         assertEquals("Tienda Centro", resultado.nombreTienda());
+        assertEquals("Calle Falsa 123", resultado.direccion());
         assertEquals(2, resultado.secciones().size());
         
         // Verificar sección Horno - debe mostrar trabajadores
@@ -110,6 +118,8 @@ class ReporteServiceImplTest {
         
         when(tiendaRepository.findByCodigo(codigoTienda)).thenReturn(Optional.of(tienda));
         when(asignacionRepository.findByCodigoTienda(codigoTienda)).thenReturn(asignaciones);
+        when(externalStoreService.buscarTiendaPorNombre("Tienda Centro"))
+            .thenReturn(Optional.of(new ExternalStoreDto(1L, "Tienda Centro", "Calle Falsa 123", "Madrid")));
         
         // When
         CoberturaHorasDto resultado = reporteService.obtenerCoberturaHoras(codigoTienda);
@@ -118,6 +128,7 @@ class ReporteServiceImplTest {
         assertNotNull(resultado);
         assertEquals("T001", resultado.codigoTienda());
         assertEquals("Tienda Centro", resultado.nombreTienda());
+        assertEquals("Calle Falsa 123", resultado.direccion());
     
         assertEquals(4, resultado.seccionesIncompletas().size()); // Pescadería, Cajas, Verduras, Droguería
         

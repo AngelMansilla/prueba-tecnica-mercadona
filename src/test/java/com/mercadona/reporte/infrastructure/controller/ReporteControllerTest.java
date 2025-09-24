@@ -44,6 +44,7 @@ class ReporteControllerTest {
         EstadoTiendaDto estadoEsperado = new EstadoTiendaDto(
             "T001",
             "Tienda Centro",
+            "Calle Falsa 123",
             List.of(seccionHorno)
         );
         
@@ -55,6 +56,7 @@ class ReporteControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.codigoTienda").value("T001"))
                 .andExpect(jsonPath("$.nombreTienda").value("Tienda Centro"))
+                .andExpect(jsonPath("$.direccion").value("Calle Falsa 123"))
                 .andExpect(jsonPath("$.secciones").isArray())
                 .andExpect(jsonPath("$.secciones[0].nombreSeccion").value("Horno"))
                 .andExpect(jsonPath("$.secciones[0].trabajadores").isArray())
@@ -77,6 +79,7 @@ class ReporteControllerTest {
         CoberturaHorasDto coberturaEsperada = new CoberturaHorasDto(
             "T001",
             "Tienda Centro",
+            "Calle Falsa 123",
             List.of(pescaderia, verduras),
             2,
             20
@@ -90,6 +93,7 @@ class ReporteControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.codigoTienda").value("T001"))
                 .andExpect(jsonPath("$.nombreTienda").value("Tienda Centro"))
+                .andExpect(jsonPath("$.direccion").value("Calle Falsa 123"))
                 .andExpect(jsonPath("$.seccionesIncompletas").isArray())
                 .andExpect(jsonPath("$.seccionesIncompletas[0].nombreSeccion").value("Pescadería"))
                 .andExpect(jsonPath("$.seccionesIncompletas[0].horasNecesarias").value(16))

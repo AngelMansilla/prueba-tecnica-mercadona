@@ -11,6 +11,8 @@ import com.mercadona.reporte.infrastructure.controller.dto.TrabajadorAsignadoDto
 import com.mercadona.tienda.domain.Seccion;
 import com.mercadona.tienda.domain.Tienda;
 import com.mercadona.tienda.infrastructure.repository.TiendaRepository;
+import com.mercadona.external.port.ExternalStoreService;
+import com.mercadona.external.dto.ExternalStoreDto;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -23,6 +25,7 @@ public class ReporteServiceImpl implements ReporteService {
 
     private final TiendaRepository tiendaRepository;
     private final AsignacionRepository asignacionRepository;
+    private final ExternalStoreService externalStoreService;
 
     // Secciones predefinidas del sistema
     private static final List<Seccion> SECCIONES_SISTEMA = Arrays.asList(
@@ -33,10 +36,13 @@ public class ReporteServiceImpl implements ReporteService {
         new Seccion("Droguería", 16)
     );
 
-    public ReporteServiceImpl(TiendaRepository tiendaRepository, AsignacionRepository asignacionRepository) {
+    public ReporteServiceImpl(TiendaRepository tiendaRepository, 
+                             AsignacionRepository asignacionRepository,
+                             ExternalStoreService externalStoreService) {
         this.tiendaRepository = tiendaRepository;
         this.asignacionRepository = asignacionRepository;
-    }
+        this.externalStoreService = externalStoreService;
+    } 
 
     @Override
     public EstadoTiendaDto obtenerEstadoTienda(String codigoTienda) {
@@ -44,8 +50,9 @@ public class ReporteServiceImpl implements ReporteService {
         List<Asignacion> asignaciones = asignacionRepository.findByCodigoTienda(codigoTienda);
         
         List<SeccionEstadoDto> secciones = construirSeccionesEstado(asignaciones);
+        String direccion = obtenerDireccionTienda(tienda.getNombre());
         
-        return new EstadoTiendaDto(tienda.getCodigo(), tienda.getNombre(), secciones);
+        return new EstadoTiendaDto(tienda.getCodigo(), tienda.getNombre(), direccion, secciones);
     }
 
     @Override
@@ -57,10 +64,12 @@ public class ReporteServiceImpl implements ReporteService {
         int totalHorasFaltantes = seccionesIncompletas.stream()
             .mapToInt(SeccionCoberturaDto::horasFaltantes)
             .sum();
+        String direccion = obtenerDireccionTienda(tienda.getNombre());
         
         return new CoberturaHorasDto(
             tienda.getCodigo(), 
             tienda.getNombre(), 
+            direccion,
             seccionesIncompletas,
             seccionesIncompletas.size(),
             totalHorasFaltantes
@@ -122,5 +131,15 @@ public class ReporteServiceImpl implements ReporteService {
             })
             .filter(seccion -> seccion.horasFaltantes() > 0) // Solo secciones incompletas
             .toList();
+    }
+
+    /**
+     * Obtiene la dirección de una tienda desde la API externa
+     * Busca por nombre de tienda en el campo 'description' de la API
+     */
+    private String obtenerDireccionTienda(String nombreTienda) {
+        return externalStoreService.buscarTiendaPorNombre(nombreTienda)
+            .map(ExternalStoreDto::address)
+            .orElse("Dirección no disponible");
     }
 }

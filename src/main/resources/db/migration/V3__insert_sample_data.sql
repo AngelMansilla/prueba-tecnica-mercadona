@@ -2,10 +2,11 @@
 -- Autor: Angel Mansilla Puerto
 -- Fecha: 2025-09-24
 
+-- Tiendas reales de Mercadona (coincidir con API externa jameral/stores)
 INSERT INTO tiendas (codigo, nombre) VALUES 
-('T004', 'Mercadona Ronda Norte'),
-('T005', 'Mercadona Plaza Mayor'),
-('T006', 'Mercadona Zona Industrial');
+('T004', 'LA UNION'),
+('T005', 'CAMINO SAN RAFAEL'),
+('T006', 'AVDA. GIORGETA');
 
 INSERT INTO trabajadores (dni, nombre, horas_disponibles, tienda_id) VALUES 
 -- Tienda T004 (Ronda Norte) 
