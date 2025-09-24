@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "mercadona-store-management",
 		"name": "Mercadona Store Management API",
-		"description": "Colección completa de endpoints para la gestión de tiendas, trabajadores y asignaciones de Mercadona",
+		"description": "API completa para gestión de tiendas Mercadona con CRUD, reportes y datos de ejemplo (T004-T006 pobladas, T001-T003 libres para testing)",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -32,14 +32,14 @@
 					"response": []
 				},
 				{
-					"name": "Buscar Tienda por Código",
+					"name": "Buscar Tienda por Código (Datos Ejemplo)",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/api/tiendas/T001",
+							"raw": "{{base_url}}/api/tiendas/T004",
 							"host": ["{{base_url}}"],
-							"path": ["api", "tiendas", "T001"]
+							"path": ["api", "tiendas", "T004"]
 						}
 					},
 					"response": []
@@ -77,7 +77,7 @@
 					"response": []
 				},
 				{
-					"name": "Actualizar Tienda",
+					"name": "Actualizar Tienda (Datos Ejemplo)",
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -88,25 +88,25 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"codigo\": \"T001\",\n    \"nombre\": \"Tienda Centro Actualizada\"\n}"
+							"raw": "{\n    \"codigo\": \"T004\",\n    \"nombre\": \"Mercadona Ronda Norte ACTUALIZADA\"\n}"
 						},
 						"url": {
-							"raw": "{{base_url}}/api/tiendas/T001",
+							"raw": "{{base_url}}/api/tiendas/T004",
 							"host": ["{{base_url}}"],
-							"path": ["api", "tiendas", "T001"]
+							"path": ["api", "tiendas", "T004"]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Eliminar Tienda",
+					"name": "Eliminar Tienda (Datos Ejemplo)",
 					"request": {
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/api/tiendas/T001",
+							"raw": "{{base_url}}/api/tiendas/T005",
 							"host": ["{{base_url}}"],
-							"path": ["api", "tiendas", "T001"]
+							"path": ["api", "tiendas", "T005"]
 						}
 					},
 					"response": []
@@ -139,14 +139,14 @@
 					"response": []
 				},
 				{
-					"name": "Buscar Trabajador por DNI",
+					"name": "Buscar Trabajador por DNI (Datos Ejemplo)",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/api/trabajadores/12345678Z",
+							"raw": "{{base_url}}/api/trabajadores/44444444R",
 							"host": ["{{base_url}}"],
-							"path": ["api", "trabajadores", "12345678Z"]
+							"path": ["api", "trabajadores", "44444444R"]
 						}
 					},
 					"response": []
@@ -165,18 +165,18 @@
 					"response": []
 				},
 				{
-					"name": "Trabajadores por Tienda",
+					"name": "Trabajadores por Tienda (Datos Ejemplo)",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/api/trabajadores?tienda=T001",
+							"raw": "{{base_url}}/api/trabajadores?tienda=T004",
 							"host": ["{{base_url}}"],
 							"path": ["api", "trabajadores"],
 							"query": [
 								{
 									"key": "tienda",
-									"value": "T001"
+									"value": "T004"
 								}
 							]
 						}
@@ -184,18 +184,18 @@
 					"response": []
 				},
 				{
-					"name": "Trabajadores por Nombre",
+					"name": "Trabajadores por Nombre (Datos Ejemplo)",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/api/trabajadores?nombre=Juan",
+							"raw": "{{base_url}}/api/trabajadores?nombre=Ana",
 							"host": ["{{base_url}}"],
 							"path": ["api", "trabajadores"],
 							"query": [
 								{
 									"key": "nombre",
-									"value": "Juan"
+									"value": "Ana"
 								}
 							]
 						}
@@ -203,7 +203,7 @@
 					"response": []
 				},
 				{
-					"name": "Actualizar Trabajador",
+					"name": "Actualizar Trabajador (Datos Ejemplo)",
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -214,25 +214,25 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"dni\": \"12345678Z\",\n    \"nombre\": \"Juan Perez Actualizado\",\n    \"horasDisponibles\": 6,\n    \"codigoTienda\": \"T001\"\n}"
+							"raw": "{\n    \"dni\": \"44444444R\",\n    \"nombre\": \"Ana López García ACTUALIZADA\",\n    \"horasDisponibles\": 6,\n    \"codigoTienda\": \"T004\"\n}"
 						},
 						"url": {
-							"raw": "{{base_url}}/api/trabajadores/12345678Z",
+							"raw": "{{base_url}}/api/trabajadores/44444444R",
 							"host": ["{{base_url}}"],
-							"path": ["api", "trabajadores", "12345678Z"]
+							"path": ["api", "trabajadores", "44444444R"]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Eliminar Trabajador",
+					"name": "Eliminar Trabajador (Datos Ejemplo)",
 					"request": {
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/api/trabajadores/12345678Z",
+							"raw": "{{base_url}}/api/trabajadores/X1111111R",
 							"host": ["{{base_url}}"],
-							"path": ["api", "trabajadores", "12345678Z"]
+							"path": ["api", "trabajadores", "X1111111R"]
 						}
 					},
 					"response": []
@@ -265,46 +265,46 @@
 					"response": []
 				},
 				{
-					"name": "Asignaciones por Trabajador",
+					"name": "Asignaciones por Trabajador (Datos Ejemplo)",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/api/asignaciones/trabajador/12345678Z",
+							"raw": "{{base_url}}/api/asignaciones/trabajador/44444444R",
 							"host": ["{{base_url}}"],
-							"path": ["api", "asignaciones", "trabajador", "12345678Z"]
+							"path": ["api", "asignaciones", "trabajador", "44444444R"]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Asignaciones por Sección",
+					"name": "Asignaciones por Sección (Datos Ejemplo)",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/api/asignaciones/seccion/Horno",
+							"raw": "{{base_url}}/api/asignaciones/seccion/Cajas",
 							"host": ["{{base_url}}"],
-							"path": ["api", "asignaciones", "seccion", "Horno"]
+							"path": ["api", "asignaciones", "seccion", "Cajas"]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Asignaciones por Tienda",
+					"name": "Asignaciones por Tienda (Datos Ejemplo)",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/api/asignaciones/tienda/T001",
+							"raw": "{{base_url}}/api/asignaciones/tienda/T005",
 							"host": ["{{base_url}}"],
-							"path": ["api", "asignaciones", "tienda", "T001"]
+							"path": ["api", "asignaciones", "tienda", "T005"]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Actualizar Horas de Asignación",
+					"name": "Actualizar Horas de Asignación (Datos Ejemplo)",
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -318,22 +318,22 @@
 							"raw": "{\n    \"nuevasHoras\": 6\n}"
 						},
 						"url": {
-							"raw": "{{base_url}}/api/asignaciones/trabajador/12345678Z/seccion/Horno",
+							"raw": "{{base_url}}/api/asignaciones/trabajador/44444444R/seccion/Horno",
 							"host": ["{{base_url}}"],
-							"path": ["api", "asignaciones", "trabajador", "12345678Z", "seccion", "Horno"]
+							"path": ["api", "asignaciones", "trabajador", "44444444R", "seccion", "Horno"]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Eliminar Asignación",
+					"name": "Eliminar Asignación (Datos Ejemplo)",
 					"request": {
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/api/asignaciones/trabajador/12345678Z/seccion/Horno",
+							"raw": "{{base_url}}/api/asignaciones/trabajador/77777777B/seccion/Droguería",
 							"host": ["{{base_url}}"],
-							"path": ["api", "asignaciones", "trabajador", "12345678Z", "seccion", "Horno"]
+							"path": ["api", "asignaciones", "trabajador", "77777777B", "seccion", "Droguería"]
 						}
 					},
 					"response": []
@@ -344,40 +344,14 @@
 			"name": "📊 Reportes",
 			"item": [
 				{
-					"name": "Horas Totales por Tienda",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/api/asignaciones/tienda/T001/horas",
-							"host": ["{{base_url}}"],
-							"path": ["api", "asignaciones", "tienda", "T001", "horas"]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Horas Totales por Sección",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/api/asignaciones/seccion/Horno/horas",
-							"host": ["{{base_url}}"],
-							"path": ["api", "asignaciones", "seccion", "Horno", "horas"]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "📊 Estado Completo de Tienda",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/api/reportes/tienda/T001/estado",
+							"raw": "{{base_url}}/api/reportes/tienda/T005/estado",
 							"host": ["{{base_url}}"],
-							"path": ["api", "reportes", "tienda", "T001", "estado"]
+							"path": ["api", "reportes", "tienda", "T005", "estado"]
 						}
 					},
 					"response": []
@@ -388,9 +362,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/api/reportes/tienda/T001/cobertura",
+							"raw": "{{base_url}}/api/reportes/tienda/T004/cobertura",
 							"host": ["{{base_url}}"],
-							"path": ["api", "reportes", "tienda", "T001", "cobertura"]
+							"path": ["api", "reportes", "tienda", "T004", "cobertura"]
 						}
 					},
 					"response": []
