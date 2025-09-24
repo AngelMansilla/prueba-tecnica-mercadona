@@ -3,6 +3,7 @@ package com.mercadona.trabajador.infrastructure.controller;
 import com.mercadona.trabajador.application.port.TrabajadorService;
 import com.mercadona.trabajador.domain.Trabajador;
 import com.mercadona.trabajador.infrastructure.controller.dto.TrabajadorDto;
+import com.mercadona.shared.infrastructure.controller.dto.EliminacionResponseDto;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -99,8 +100,9 @@ public class TrabajadorController {
     }
 
     @DeleteMapping("/{dni}")
-    public ResponseEntity<Void> eliminarTrabajador(@PathVariable String dni) {
+    public ResponseEntity<EliminacionResponseDto> eliminarTrabajador(@PathVariable String dni) {
         trabajadorService.eliminarTrabajador(dni);
-        return ResponseEntity.noContent().build();
+        EliminacionResponseDto respuesta = EliminacionResponseDto.crear("Trabajador", dni);
+        return ResponseEntity.ok(respuesta);
     }
 }

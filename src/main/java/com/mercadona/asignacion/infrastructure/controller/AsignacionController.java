@@ -7,6 +7,7 @@ import com.mercadona.asignacion.infrastructure.controller.dto.AsignacionDto;
 import com.mercadona.asignacion.infrastructure.controller.dto.AsignacionResponseDto;
 import com.mercadona.asignacion.infrastructure.controller.dto.HorasSeccionDto;
 import com.mercadona.asignacion.infrastructure.controller.dto.HorasTiendaDto;
+import com.mercadona.shared.infrastructure.controller.dto.EliminacionResponseDto;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -115,9 +116,11 @@ public class AsignacionController {
     }
 
     @DeleteMapping("/trabajador/{dni}/seccion/{nombreSeccion}")
-    public ResponseEntity<Void> eliminarAsignacion(@PathVariable String dni, @PathVariable String nombreSeccion) {
+    public ResponseEntity<EliminacionResponseDto> eliminarAsignacion(@PathVariable String dni, @PathVariable String nombreSeccion) {
         asignacionService.eliminarAsignacion(dni, nombreSeccion);
-        return ResponseEntity.noContent().build();
+        String identificador = String.format("%s-%s", dni, nombreSeccion);
+        EliminacionResponseDto respuesta = EliminacionResponseDto.crear("Asignación", identificador);
+        return ResponseEntity.ok(respuesta);
     }
 
     @GetMapping("/tienda/{codigoTienda}/horas")

@@ -3,6 +3,7 @@ package com.mercadona.tienda.infrastructure.controller;
 import com.mercadona.tienda.application.port.TiendaService;
 import com.mercadona.tienda.domain.Tienda;
 import com.mercadona.tienda.infrastructure.controller.dto.TiendaDto;
+import com.mercadona.shared.infrastructure.controller.dto.EliminacionResponseDto;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -63,8 +64,9 @@ public class TiendaController {
     }
 
     @DeleteMapping("/{codigo}")
-    public ResponseEntity<Void> eliminarTienda(@PathVariable String codigo) {
+    public ResponseEntity<EliminacionResponseDto> eliminarTienda(@PathVariable String codigo) {
         tiendaService.eliminarTienda(codigo);
-        return ResponseEntity.noContent().build();
+        EliminacionResponseDto respuesta = EliminacionResponseDto.crear("Tienda", codigo);
+        return ResponseEntity.ok(respuesta);
     }
 }
