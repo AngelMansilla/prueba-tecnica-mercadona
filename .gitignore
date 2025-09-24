@@ -1,0 +1,14 @@
+# Maven
+target/
+*.class
+
+# IDE  
+.idea/
+.vscode/
+*.iml
+
+# Logs
+*.log
+
+# Spring Boot
+application-local.yml

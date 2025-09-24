@@ -1,0 +1,2 @@
+# Directorio para migraciones de Flyway
+# Las migraciones seguirán el patrón: V1__descripcion.sql
