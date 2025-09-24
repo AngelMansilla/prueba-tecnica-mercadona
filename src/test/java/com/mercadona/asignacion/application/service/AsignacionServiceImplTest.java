@@ -392,11 +392,9 @@ class AsignacionServiceImplTest {
         String nombreSeccion = "Horno";
         int horasAsignadas = 5;
         
-        // Trabajador con 6 horas disponibles, ya tiene 4 asignadas
         Trabajador trabajadorConHorasLimitadas = new Trabajador("12345678Z", "Juan Perez", 6, tiendaMock);
         trabajadorConHorasLimitadas.setId(1L);
         
-        // Asignación existente: 4 horas
         Asignacion asignacionExistente = new Asignacion(trabajadorConHorasLimitadas, seccionMock, 4);
         List<Asignacion> asignacionesExistentes = List.of(asignacionExistente);
         
@@ -423,7 +421,6 @@ class AsignacionServiceImplTest {
         String nombreSeccion = "Horno";
         int horasAsignadas = 4;
         
-        // Trabajador y sección válidos (las secciones son globales)
         Trabajador trabajadorValido = new Trabajador("12345678Z", "Juan Perez", 8, tiendaMock);
         trabajadorValido.setId(1L);
         
@@ -438,6 +435,8 @@ class AsignacionServiceImplTest {
                 .thenReturn(List.of());
         when(asignacionRepository.existsByTrabajadorAndSeccion(trabajadorValido, seccionValida))
                 .thenReturn(false);
+        when(asignacionRepository.sumHorasAsignadasBySeccion(seccionValida))
+                .thenReturn(0); // Sin horas asignadas previamente
         when(asignacionRepository.save(any(Asignacion.class)))
                 .thenAnswer(invocation -> invocation.getArgument(0));
         
@@ -449,6 +448,39 @@ class AsignacionServiceImplTest {
         assertEquals(trabajadorValido, resultado.getTrabajador());
         assertEquals(seccionValida, resultado.getSeccion());
         assertEquals(horasAsignadas, resultado.getHorasAsignadas());
+    }
+
+    @Test
+    void deberiaFallarCuandoSeccionExcedeLimiteHoras() {
+        // Given
+        String dniTrabajador = "12345678Z";
+        String nombreSeccion = "Horno";
+        int horasAsignadas = 3; // Intentar asignar 3 horas más
+        
+        Trabajador trabajadorValido = new Trabajador("12345678Z", "Juan Perez", 8, tiendaMock);
+        trabajadorValido.setId(1L);
+        
+        Seccion seccionHorno = new Seccion("Horno", 8); // Límite: 8 horas
+        seccionHorno.setId(1L);
+        
+        when(trabajadorRepository.findByDni(dniTrabajador))
+                .thenReturn(Optional.of(trabajadorValido));
+        when(seccionRepository.findByNombre(nombreSeccion))
+                .thenReturn(Optional.of(seccionHorno));
+        when(asignacionRepository.findByTrabajador(trabajadorValido))
+                .thenReturn(List.of());
+        when(asignacionRepository.existsByTrabajadorAndSeccion(trabajadorValido, seccionHorno))
+                .thenReturn(false);
+        when(asignacionRepository.sumHorasAsignadasBySeccion(seccionHorno))
+                .thenReturn(6); // Ya tiene 6 horas asignadas
+        
+        // When & Then
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            asignacionService.crearAsignacion(dniTrabajador, nombreSeccion, horasAsignadas);
+        });
+        
+        assertEquals("La sección no puede exceder sus horas necesarias. Sección: Horno, límite: 8, ya asignadas: 6, intentando asignar: 3", 
+                exception.getMessage());
     }
 
 }

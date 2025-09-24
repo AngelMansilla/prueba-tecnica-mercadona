@@ -133,6 +133,22 @@ class TiendaServiceImplTest {
     }
 
     @Test
+    void deberiaFallarCuandoCodigoTiendaFormatoInvalido() {
+        // When & Then
+        assertThrows(IllegalArgumentException.class, () -> {
+            tiendaService.crearTienda("X001", "Tienda Test");
+        });
+        
+        assertThrows(IllegalArgumentException.class, () -> {
+            tiendaService.crearTienda("T1000", "Tienda Test");
+        });
+        
+        assertThrows(IllegalArgumentException.class, () -> {
+            tiendaService.crearTienda("T00", "Tienda Test");
+        });
+    }
+
+    @Test
     void deberiaRetornarVacioSiTiendaNoExiste() {
         // Given
         String codigo = "INEXISTENTE";

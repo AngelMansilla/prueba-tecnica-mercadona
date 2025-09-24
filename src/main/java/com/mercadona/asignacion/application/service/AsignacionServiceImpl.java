@@ -34,6 +34,7 @@ public class AsignacionServiceImpl implements AsignacionService {
         
         validarAsignacionUnica(trabajador, seccion);
         validarHorasDisponibles(trabajador, horasAsignadas);
+        validarLimiteSeccion(seccion, horasAsignadas);
         
         Asignacion nuevaAsignacion = new Asignacion(trabajador, seccion, horasAsignadas);
         return asignacionRepository.save(nuevaAsignacion);
@@ -144,6 +145,21 @@ public class AsignacionServiceImpl implements AsignacionService {
             throw new IllegalArgumentException(
                 "El trabajador no puede exceder sus horas disponibles. Disponibles: " + horasDisponibles + 
                 ", ya asignadas: " + horasYaAsignadas + ", intentando asignar: " + horasAsignadas);
+        }
+    }
+
+    private void validarLimiteSeccion(Seccion seccion, int horasAsignadas) {
+        Integer horasYaAsignadas = asignacionRepository.sumHorasAsignadasBySeccion(seccion);
+        if (horasYaAsignadas == null) {
+            horasYaAsignadas = 0;
+        }
+        
+        int horasNecesarias = seccion.getHorasNecesarias();
+        
+        if (horasYaAsignadas + horasAsignadas > horasNecesarias) {
+            throw new IllegalArgumentException(
+                "La sección no puede exceder sus horas necesarias. Sección: " + seccion.getNombre() + 
+                ", límite: " + horasNecesarias + ", ya asignadas: " + horasYaAsignadas + ", intentando asignar: " + horasAsignadas);
         }
     }
 

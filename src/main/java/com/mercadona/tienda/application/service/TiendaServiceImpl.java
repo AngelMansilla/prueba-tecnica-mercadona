@@ -29,6 +29,7 @@ public class TiendaServiceImpl implements TiendaService {
     @Override
     public Tienda crearTienda(String codigo, String nombre) {
         validarDatosCreacion(codigo, nombre);
+        validarFormatoCodigo(codigo);
         validarCodigoUnico(codigo);
         
         Tienda nuevaTienda = new Tienda(codigo, nombre);
@@ -102,6 +103,12 @@ public class TiendaServiceImpl implements TiendaService {
     private void validarCodigoUnico(String codigo) {
         if (tiendaRepository.existsByCodigo(codigo)) {
             throw new IllegalArgumentException("Ya existe una tienda con el código: " + codigo);
+        }
+    }
+
+    private void validarFormatoCodigo(String codigo) {
+        if (!codigo.matches("T\\d{3}")) {
+            throw new IllegalArgumentException("El código debe tener el formato T001-T999");
         }
     }
 }

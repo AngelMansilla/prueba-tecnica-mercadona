@@ -30,6 +30,7 @@ public class TrabajadorServiceImpl implements TrabajadorService {
     @Override
     public Trabajador crearTrabajador(String dni, String nombre, int horasDisponibles, String codigoTienda) {
         validarDniValido(dni);
+        validarHorasDisponibles(horasDisponibles);
         
         Tienda tienda = buscarTiendaPorCodigo(codigoTienda);
         validarDniUnico(dni);
@@ -126,6 +127,12 @@ public class TrabajadorServiceImpl implements TrabajadorService {
     private void validarDniUnico(String dni) {
         if (trabajadorRepository.existsByDni(dni)) {
             throw new IllegalArgumentException("Ya existe un trabajador con el DNI: " + dni);
+        }
+    }
+
+    private void validarHorasDisponibles(int horasDisponibles) {
+        if (horasDisponibles < 1 || horasDisponibles > 8) {
+            throw new IllegalArgumentException("Las horas disponibles deben estar entre 1 y 8");
         }
     }
 }

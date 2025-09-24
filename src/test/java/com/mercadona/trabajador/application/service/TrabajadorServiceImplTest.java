@@ -170,6 +170,44 @@ class TrabajadorServiceImplTest {
     }
 
     @Test
+    void deberiaFallarCuandoHorasDisponiblesMenorA1() {
+        // Given
+        String dni = "12345678Z";
+        String nombre = "Juan Perez";
+        int horasInvalidas = 0;
+        String codigoTienda = "T001";
+        
+        when(tiendaRepository.findByCodigo(codigoTienda)).thenReturn(Optional.of(tiendaMock));
+        
+        // When & Then
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            trabajadorService.crearTrabajador(dni, nombre, horasInvalidas, codigoTienda);
+        });
+        
+        assertEquals("Las horas disponibles deben estar entre 1 y 8", exception.getMessage());
+        verify(trabajadorRepository, never()).save(any());
+    }
+
+    @Test
+    void deberiaFallarCuandoHorasDisponiblesMayorA8() {
+        // Given
+        String dni = "12345678Z";
+        String nombre = "Juan Perez";
+        int horasInvalidas = 9;
+        String codigoTienda = "T001";
+        
+        when(tiendaRepository.findByCodigo(codigoTienda)).thenReturn(Optional.of(tiendaMock));
+        
+        // When & Then
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            trabajadorService.crearTrabajador(dni, nombre, horasInvalidas, codigoTienda);
+        });
+        
+        assertEquals("Las horas disponibles deben estar entre 1 y 8", exception.getMessage());
+        verify(trabajadorRepository, never()).save(any());
+    }
+
+    @Test
     void deberiaBuscarTrabajadoresPorTienda() {
         // Given
         String codigoTienda = "T001";
