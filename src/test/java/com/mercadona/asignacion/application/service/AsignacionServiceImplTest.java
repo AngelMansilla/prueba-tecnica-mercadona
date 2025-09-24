@@ -150,6 +150,7 @@ class AsignacionServiceImplTest {
         when(trabajadorRepository.findByDni(dniTrabajador)).thenReturn(Optional.of(trabajadorMock));
         when(seccionRepository.findByNombre(nombreSeccion)).thenReturn(Optional.of(seccionMock));
         when(asignacionRepository.existsByTrabajadorAndSeccion(trabajadorMock, seccionMock)).thenReturn(false);
+        when(asignacionRepository.findByTrabajador(trabajadorMock)).thenReturn(List.of()); // Sin asignaciones previas
         
         // When & Then
         IllegalArgumentException exception = assertThrows(
@@ -157,7 +158,8 @@ class AsignacionServiceImplTest {
             () -> asignacionService.crearAsignacion(dniTrabajador, nombreSeccion, horasAsignadas)
         );
         
-        assertTrue(exception.getMessage().contains("Las horas asignadas (10) no pueden superar las horas disponibles del trabajador (8)"));
+        assertEquals("El trabajador no puede exceder sus horas disponibles. Disponibles: 8, ya asignadas: 0, intentando asignar: 10", 
+                exception.getMessage());
         verify(asignacionRepository, never()).save(any());
     }
 
@@ -381,6 +383,72 @@ class AsignacionServiceImplTest {
         // Then
         assertTrue(resultado);
         verify(asignacionRepository).existsByTrabajadorAndSeccion(trabajadorMock, seccionMock);
+    }
+
+    @Test
+    void deberiaFallarCuandoTrabajadorExcedeHorasDisponibles() {
+        // Given
+        String dniTrabajador = "12345678Z";
+        String nombreSeccion = "Horno";
+        int horasAsignadas = 5;
+        
+        // Trabajador con 6 horas disponibles, ya tiene 4 asignadas
+        Trabajador trabajadorConHorasLimitadas = new Trabajador("12345678Z", "Juan Perez", 6, tiendaMock);
+        trabajadorConHorasLimitadas.setId(1L);
+        
+        // Asignación existente: 4 horas
+        Asignacion asignacionExistente = new Asignacion(trabajadorConHorasLimitadas, seccionMock, 4);
+        List<Asignacion> asignacionesExistentes = List.of(asignacionExistente);
+        
+        when(trabajadorRepository.findByDni(dniTrabajador))
+                .thenReturn(Optional.of(trabajadorConHorasLimitadas));
+        when(seccionRepository.findByNombre(nombreSeccion))
+                .thenReturn(Optional.of(seccionMock));
+        when(asignacionRepository.findByTrabajador(trabajadorConHorasLimitadas))
+                .thenReturn(asignacionesExistentes);
+        
+        // When & Then
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            asignacionService.crearAsignacion(dniTrabajador, nombreSeccion, horasAsignadas);
+        });
+        
+        assertEquals("El trabajador no puede exceder sus horas disponibles. Disponibles: 6, ya asignadas: 4, intentando asignar: 5", 
+                exception.getMessage());
+    }
+
+    @Test
+    void deberiaCrearAsignacionCuandoTrabajadorYSeccionSonValidos() {
+        // Given
+        String dniTrabajador = "12345678Z";
+        String nombreSeccion = "Horno";
+        int horasAsignadas = 4;
+        
+        // Trabajador y sección válidos (las secciones son globales)
+        Trabajador trabajadorValido = new Trabajador("12345678Z", "Juan Perez", 8, tiendaMock);
+        trabajadorValido.setId(1L);
+        
+        Seccion seccionValida = new Seccion("Horno", 8);
+        seccionValida.setId(1L);
+        
+        when(trabajadorRepository.findByDni(dniTrabajador))
+                .thenReturn(Optional.of(trabajadorValido));
+        when(seccionRepository.findByNombre(nombreSeccion))
+                .thenReturn(Optional.of(seccionValida));
+        when(asignacionRepository.findByTrabajador(trabajadorValido))
+                .thenReturn(List.of());
+        when(asignacionRepository.existsByTrabajadorAndSeccion(trabajadorValido, seccionValida))
+                .thenReturn(false);
+        when(asignacionRepository.save(any(Asignacion.class)))
+                .thenAnswer(invocation -> invocation.getArgument(0));
+        
+        // When
+        Asignacion resultado = asignacionService.crearAsignacion(dniTrabajador, nombreSeccion, horasAsignadas);
+        
+        // Then
+        assertNotNull(resultado);
+        assertEquals(trabajadorValido, resultado.getTrabajador());
+        assertEquals(seccionValida, resultado.getSeccion());
+        assertEquals(horasAsignadas, resultado.getHorasAsignadas());
     }
 
 }

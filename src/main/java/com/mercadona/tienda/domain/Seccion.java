@@ -43,6 +43,10 @@ public class Seccion {
     public int getHorasNecesarias() {
         return horasNecesarias;
     }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
     
     @Override
     public boolean equals(Object obj) {

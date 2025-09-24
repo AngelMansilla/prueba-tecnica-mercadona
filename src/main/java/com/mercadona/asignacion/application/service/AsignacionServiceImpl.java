@@ -131,6 +131,22 @@ public class AsignacionServiceImpl implements AsignacionService {
         }
     }
 
+
+    private void validarHorasDisponibles(Trabajador trabajador, int horasAsignadas) {
+        List<Asignacion> asignacionesExistentes = asignacionRepository.findByTrabajador(trabajador);
+        int horasYaAsignadas = asignacionesExistentes.stream()
+                .mapToInt(Asignacion::getHorasAsignadas)
+                .sum();
+        
+        int horasDisponibles = trabajador.getHorasDisponibles();
+        
+        if (horasYaAsignadas + horasAsignadas > horasDisponibles) {
+            throw new IllegalArgumentException(
+                "El trabajador no puede exceder sus horas disponibles. Disponibles: " + horasDisponibles + 
+                ", ya asignadas: " + horasYaAsignadas + ", intentando asignar: " + horasAsignadas);
+        }
+    }
+
     @Override
     public Asignacion actualizarHorasAsignacion(String dniTrabajador, String nombreSeccion, int nuevasHoras) {
         if (nuevasHoras < 1 || nuevasHoras > 8) {
@@ -159,10 +175,4 @@ public class AsignacionServiceImpl implements AsignacionService {
         return asignacionRepository.save(asignacionExistente);
     }
 
-    private void validarHorasDisponibles(Trabajador trabajador, int horasAsignadas) {
-        if (horasAsignadas > trabajador.getHorasDisponibles()) {
-            throw new IllegalArgumentException(
-                "Las horas asignadas (" + horasAsignadas + ") no pueden superar las horas disponibles del trabajador (" + trabajador.getHorasDisponibles() + ")");
-        }
-    }
 }
