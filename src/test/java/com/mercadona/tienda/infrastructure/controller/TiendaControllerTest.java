@@ -187,6 +187,8 @@ class TiendaControllerTest {
         
         // When & Then
         mockMvc.perform(delete("/api/tiendas/{codigo}", codigo))
-                .andExpect(status().isNoContent());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.entidad").value("Tienda"))
+                .andExpect(jsonPath("$.identificador").value("T001"));
     }
 }

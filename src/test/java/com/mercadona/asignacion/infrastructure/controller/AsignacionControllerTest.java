@@ -153,7 +153,9 @@ class AsignacionControllerTest {
         
         // When & Then
         mockMvc.perform(delete("/api/asignaciones/trabajador/{dni}/seccion/{seccion}", dni, seccion))
-                .andExpect(status().isNoContent());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.entidad").value("Asignación"))
+                .andExpect(jsonPath("$.identificador").value("12345678Z-Horno"));
     }
 
     @Test
@@ -184,5 +186,65 @@ class AsignacionControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.nombreSeccion").value("Horno"))
                 .andExpect(jsonPath("$.horasTotales").value(8));
+    }
+
+    @Test
+    void deberiaRechazarAsignacionConHorasMenorA1() throws Exception {
+        // Given
+        AsignacionDto asignacionDto = new AsignacionDto("12345678Z", "Horno", 0);
+        
+        // When & Then
+        mockMvc.perform(post("/api/asignaciones")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(asignacionDto)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.titulo").value("Errores de validación"))
+                .andExpect(jsonPath("$.mensaje").value("{horasAsignadas=Las horas asignadas deben ser al menos 1}"));
+    }
+
+    @Test
+    void deberiaRechazarAsignacionConHorasMayorA8() throws Exception {
+        // Given
+        AsignacionDto asignacionDto = new AsignacionDto("12345678Z", "Horno", 9);
+        
+        // When & Then
+        mockMvc.perform(post("/api/asignaciones")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(asignacionDto)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.titulo").value("Errores de validación"))
+                .andExpect(jsonPath("$.mensaje").value("{horasAsignadas=Las horas asignadas no pueden exceder 8}"));
+    }
+
+    @Test
+    void deberiaRechazarActualizacionConHorasMenorA1() throws Exception {
+        // Given
+        String dni = "12345678Z";
+        String nombreSeccion = "Horno";
+        String requestBody = "{\"nuevasHoras\": 0}";
+        
+        // When & Then
+        mockMvc.perform(put("/api/asignaciones/trabajador/{dni}/seccion/{nombreSeccion}", dni, nombreSeccion)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.titulo").value("Errores de validación"))
+                .andExpect(jsonPath("$.mensaje").value("{nuevasHoras=Las horas asignadas deben ser al menos 1}"));
+    }
+
+    @Test
+    void deberiaRechazarActualizacionConHorasMayorA8() throws Exception {
+        // Given
+        String dni = "12345678Z";
+        String nombreSeccion = "Horno";
+        String requestBody = "{\"nuevasHoras\": 9}";
+        
+        // When & Then
+        mockMvc.perform(put("/api/asignaciones/trabajador/{dni}/seccion/{nombreSeccion}", dni, nombreSeccion)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.titulo").value("Errores de validación"))
+                .andExpect(jsonPath("$.mensaje").value("{nuevasHoras=Las horas asignadas no pueden superar 8}"));
     }
 }
