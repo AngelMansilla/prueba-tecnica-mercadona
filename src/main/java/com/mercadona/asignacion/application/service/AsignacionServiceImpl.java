@@ -131,6 +131,34 @@ public class AsignacionServiceImpl implements AsignacionService {
         }
     }
 
+    @Override
+    public Asignacion actualizarHorasAsignacion(String dniTrabajador, String nombreSeccion, int nuevasHoras) {
+        if (nuevasHoras < 1 || nuevasHoras > 8) {
+            throw new IllegalArgumentException("Las horas asignadas deben estar entre 1 y 8");
+        }
+
+        Asignacion asignacionExistente = buscarAsignacion(dniTrabajador, nombreSeccion)
+            .orElseThrow(() -> new IllegalArgumentException(
+                "No existe una asignación para el trabajador " + dniTrabajador + " en la sección " + nombreSeccion));
+
+        // Validar que el trabajador tenga suficientes horas disponibles
+        List<Asignacion> asignacionesTrabajador = buscarAsignacionesPorTrabajador(dniTrabajador);
+        int horasActualesAsignadas = asignacionesTrabajador.stream()
+            .filter(a -> !a.equals(asignacionExistente))
+            .mapToInt(Asignacion::getHorasAsignadas)
+            .sum();
+        int horasDisponibles = asignacionExistente.getTrabajador().getHorasDisponibles();
+        
+        if (horasActualesAsignadas + nuevasHoras > horasDisponibles) {
+            throw new IllegalArgumentException(
+                "El trabajador no tiene suficientes horas disponibles. Disponibles: " + horasDisponibles + 
+                ", ya asignadas: " + horasActualesAsignadas + ", solicitadas: " + nuevasHoras);
+        }
+
+        asignacionExistente.setHorasAsignadas(nuevasHoras);
+        return asignacionRepository.save(asignacionExistente);
+    }
+
     private void validarHorasDisponibles(Trabajador trabajador, int horasAsignadas) {
         if (horasAsignadas > trabajador.getHorasDisponibles()) {
             throw new IllegalArgumentException(

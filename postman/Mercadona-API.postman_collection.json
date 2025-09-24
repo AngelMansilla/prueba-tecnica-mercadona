@@ -1,0 +1,466 @@
+{
+	"info": {
+		"_postman_id": "mercadona-store-management",
+		"name": "Mercadona Store Management API",
+		"description": "Colección completa de endpoints para la gestión de tiendas, trabajadores y asignaciones de Mercadona",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "🏪 Tiendas",
+			"item": [
+				{
+					"name": "Crear Tienda",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"codigo\": \"T001\",\n    \"nombre\": \"Tienda Centro\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/tiendas",
+							"host": ["{{base_url}}"],
+							"path": ["api", "tiendas"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Tienda por Código",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/tiendas/T001",
+							"host": ["{{base_url}}"],
+							"path": ["api", "tiendas", "T001"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Todas las Tiendas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/tiendas",
+							"host": ["{{base_url}}"],
+							"path": ["api", "tiendas"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Tiendas por Nombre",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/tiendas?nombre=Centro",
+							"host": ["{{base_url}}"],
+							"path": ["api", "tiendas"],
+							"query": [
+								{
+									"key": "nombre",
+									"value": "Centro"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Tienda",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"codigo\": \"T001\",\n    \"nombre\": \"Tienda Centro Actualizada\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/tiendas/T001",
+							"host": ["{{base_url}}"],
+							"path": ["api", "tiendas", "T001"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Tienda",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/tiendas/T001",
+							"host": ["{{base_url}}"],
+							"path": ["api", "tiendas", "T001"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "👤 Trabajadores",
+			"item": [
+				{
+					"name": "Crear Trabajador",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"dni\": \"12345678Z\",\n    \"nombre\": \"Juan Perez\",\n    \"horasDisponibles\": 8,\n    \"codigoTienda\": \"T001\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/trabajadores",
+							"host": ["{{base_url}}"],
+							"path": ["api", "trabajadores"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Trabajador por DNI",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/trabajadores/12345678Z",
+							"host": ["{{base_url}}"],
+							"path": ["api", "trabajadores", "12345678Z"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Todos los Trabajadores",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/trabajadores",
+							"host": ["{{base_url}}"],
+							"path": ["api", "trabajadores"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Trabajadores por Tienda",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/trabajadores?tienda=T001",
+							"host": ["{{base_url}}"],
+							"path": ["api", "trabajadores"],
+							"query": [
+								{
+									"key": "tienda",
+									"value": "T001"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Trabajadores por Nombre",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/trabajadores?nombre=Juan",
+							"host": ["{{base_url}}"],
+							"path": ["api", "trabajadores"],
+							"query": [
+								{
+									"key": "nombre",
+									"value": "Juan"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Trabajador",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"dni\": \"12345678Z\",\n    \"nombre\": \"Juan Perez Actualizado\",\n    \"horasDisponibles\": 6,\n    \"codigoTienda\": \"T001\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/trabajadores/12345678Z",
+							"host": ["{{base_url}}"],
+							"path": ["api", "trabajadores", "12345678Z"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Trabajador",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/trabajadores/12345678Z",
+							"host": ["{{base_url}}"],
+							"path": ["api", "trabajadores", "12345678Z"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "🔗 Asignaciones",
+			"item": [
+				{
+					"name": "Crear Asignación",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"dniTrabajador\": \"12345678Z\",\n    \"nombreSeccion\": \"Horno\",\n    \"horasAsignadas\": 4\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/asignaciones",
+							"host": ["{{base_url}}"],
+							"path": ["api", "asignaciones"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Asignaciones por Trabajador",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/asignaciones/trabajador/12345678Z",
+							"host": ["{{base_url}}"],
+							"path": ["api", "asignaciones", "trabajador", "12345678Z"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Asignaciones por Sección",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/asignaciones/seccion/Horno",
+							"host": ["{{base_url}}"],
+							"path": ["api", "asignaciones", "seccion", "Horno"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Asignaciones por Tienda",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/asignaciones/tienda/T001",
+							"host": ["{{base_url}}"],
+							"path": ["api", "asignaciones", "tienda", "T001"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Horas de Asignación",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nuevasHoras\": 6\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/asignaciones/trabajador/12345678Z/seccion/Horno",
+							"host": ["{{base_url}}"],
+							"path": ["api", "asignaciones", "trabajador", "12345678Z", "seccion", "Horno"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Asignación",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/asignaciones/trabajador/12345678Z/seccion/Horno",
+							"host": ["{{base_url}}"],
+							"path": ["api", "asignaciones", "trabajador", "12345678Z", "seccion", "Horno"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "📊 Reportes",
+			"item": [
+				{
+					"name": "Horas Totales por Tienda",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/asignaciones/tienda/T001/horas",
+							"host": ["{{base_url}}"],
+							"path": ["api", "asignaciones", "tienda", "T001", "horas"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Horas Totales por Sección",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/asignaciones/seccion/Horno/horas",
+							"host": ["{{base_url}}"],
+							"path": ["api", "asignaciones", "seccion", "Horno", "horas"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "🧪 Tests de Validación",
+			"item": [
+				{
+					"name": "❌ Crear Tienda - Código Vacío",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"codigo\": \"\",\n    \"nombre\": \"Tienda Centro\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/tiendas",
+							"host": ["{{base_url}}"],
+							"path": ["api", "tiendas"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "❌ Crear Trabajador - DNI Inválido",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"dni\": \"12345678\",\n    \"nombre\": \"Juan Perez\",\n    \"horasDisponibles\": 8,\n    \"codigoTienda\": \"T001\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/trabajadores",
+							"host": ["{{base_url}}"],
+							"path": ["api", "trabajadores"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "❌ Crear Asignación - Horas Excesivas",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"dniTrabajador\": \"12345678Z\",\n    \"nombreSeccion\": \"Horno\",\n    \"horasAsignadas\": 10\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/asignaciones",
+							"host": ["{{base_url}}"],
+							"path": ["api", "asignaciones"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "❌ Buscar Tienda Inexistente",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/tiendas/INEXISTENTE",
+							"host": ["{{base_url}}"],
+							"path": ["api", "tiendas", "INEXISTENTE"]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8080",
+			"type": "string"
+		}
+	]
+}

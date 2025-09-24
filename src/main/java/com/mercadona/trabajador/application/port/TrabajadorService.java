@@ -22,4 +22,8 @@ public interface TrabajadorService {
     Integer sumarHorasDisponiblesPorTienda(String codigoTienda);
 
     boolean existeTrabajador(String dni);
+
+    Trabajador actualizarTrabajador(String dni, String nuevoNombre, int nuevasHorasDisponibles);
+
+    void eliminarTrabajador(String dni);
 }

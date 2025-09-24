@@ -5,6 +5,7 @@ import com.mercadona.tienda.infrastructure.repository.TiendaRepository;
 import com.mercadona.trabajador.application.port.TrabajadorService;
 import com.mercadona.trabajador.domain.Trabajador;
 import com.mercadona.trabajador.infrastructure.repository.TrabajadorRepository;
+import com.mercadona.asignacion.infrastructure.repository.AsignacionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,6 +28,9 @@ class TrabajadorServiceImplTest {
 
     @Mock
     private TiendaRepository tiendaRepository;
+    
+    @Mock
+    private AsignacionRepository asignacionRepository;
 
     private TrabajadorService trabajadorService;
 
@@ -34,7 +38,7 @@ class TrabajadorServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        trabajadorService = new TrabajadorServiceImpl(trabajadorRepository, tiendaRepository);
+        trabajadorService = new TrabajadorServiceImpl(trabajadorRepository, tiendaRepository, asignacionRepository);
         tiendaMock = new Tienda("T001", "Tienda Centro");
     }
 

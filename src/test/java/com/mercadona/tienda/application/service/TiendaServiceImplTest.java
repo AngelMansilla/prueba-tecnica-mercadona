@@ -3,6 +3,8 @@ package com.mercadona.tienda.application.service;
 import com.mercadona.tienda.application.port.TiendaService;
 import com.mercadona.tienda.domain.Tienda;
 import com.mercadona.tienda.infrastructure.repository.TiendaRepository;
+import com.mercadona.trabajador.infrastructure.repository.TrabajadorRepository;
+import com.mercadona.asignacion.infrastructure.repository.AsignacionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,18 +18,25 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doNothing;
 
 @ExtendWith(MockitoExtension.class)
 class TiendaServiceImplTest {
 
     @Mock
     private TiendaRepository tiendaRepository;
+    
+    @Mock
+    private TrabajadorRepository trabajadorRepository;
+    
+    @Mock
+    private AsignacionRepository asignacionRepository;
 
     private TiendaService tiendaService;
 
     @BeforeEach
     void setUp() {
-        tiendaService = new TiendaServiceImpl(tiendaRepository);
+        tiendaService = new TiendaServiceImpl(tiendaRepository, trabajadorRepository, asignacionRepository);
     }
 
     @Test
@@ -204,5 +213,98 @@ class TiendaServiceImplTest {
         // Then
         assertTrue(resultado);
         verify(tiendaRepository).existsByCodigo(codigo);
+    }
+
+    @Test
+    void deberiaActualizarTiendaCuandoExiste() {
+        // Given
+        String codigo = "T001";
+        String nuevoNombre = "Tienda Centro Actualizada";
+        Tienda tiendaExistente = new Tienda(codigo, "Tienda Centro");
+        Tienda tiendaActualizada = new Tienda(codigo, nuevoNombre);
+        
+        when(tiendaRepository.findByCodigo(codigo)).thenReturn(Optional.of(tiendaExistente));
+        when(tiendaRepository.save(any(Tienda.class))).thenReturn(tiendaActualizada);
+        
+        // When
+        Tienda resultado = tiendaService.actualizarTienda(codigo, nuevoNombre);
+        
+        // Then
+        assertEquals(codigo, resultado.getCodigo());
+        assertEquals(nuevoNombre, resultado.getNombre());
+        verify(tiendaRepository).findByCodigo(codigo);
+        verify(tiendaRepository).save(any(Tienda.class));
+    }
+
+    @Test
+    void deberiaFallarActualizarTiendaCuandoNoExiste() {
+        // Given
+        String codigo = "INEXISTENTE";
+        String nuevoNombre = "Nuevo Nombre";
+        
+        when(tiendaRepository.findByCodigo(codigo)).thenReturn(Optional.empty());
+        
+        // When & Then
+        IllegalArgumentException exception = assertThrows(
+            IllegalArgumentException.class,
+            () -> tiendaService.actualizarTienda(codigo, nuevoNombre)
+        );
+        
+        assertEquals("No se encontró la tienda con código: " + codigo, exception.getMessage());
+        verify(tiendaRepository).findByCodigo(codigo);
+        verify(tiendaRepository, never()).save(any());
+    }
+
+    @Test
+    void deberiaFallarActualizarTiendaCuandoNombreVacio() {
+        // Given
+        String codigo = "T001";
+        String nombreVacio = "";
+        
+        // When & Then
+        IllegalArgumentException exception = assertThrows(
+            IllegalArgumentException.class,
+            () -> tiendaService.actualizarTienda(codigo, nombreVacio)
+        );
+        
+        assertEquals("El nombre no puede ser nulo o vacío", exception.getMessage());
+        verify(tiendaRepository, never()).findByCodigo(any());
+        verify(tiendaRepository, never()).save(any());
+    }
+
+    @Test
+    void deberiaEliminarTiendaCuandoExiste() {
+        // Given
+        String codigo = "T001";
+        Tienda tiendaExistente = new Tienda(codigo, "Tienda Centro");
+        tiendaExistente.setId(1L); // Simulamos que tiene ID
+        
+        when(tiendaRepository.findByCodigo(codigo)).thenReturn(Optional.of(tiendaExistente));
+        doNothing().when(tiendaRepository).deleteById(any(Long.class));
+        
+        // When
+        tiendaService.eliminarTienda(codigo);
+        
+        // Then
+        verify(tiendaRepository).findByCodigo(codigo);
+        verify(tiendaRepository).deleteById(1L);
+    }
+
+    @Test
+    void deberiaFallarEliminarTiendaCuandoNoExiste() {
+        // Given
+        String codigo = "INEXISTENTE";
+        
+        when(tiendaRepository.findByCodigo(codigo)).thenReturn(Optional.empty());
+        
+        // When & Then
+        IllegalArgumentException exception = assertThrows(
+            IllegalArgumentException.class,
+            () -> tiendaService.eliminarTienda(codigo)
+        );
+        
+        assertEquals("No se encontró la tienda con código: " + codigo, exception.getMessage());
+        verify(tiendaRepository).findByCodigo(codigo);
+        verify(tiendaRepository, never()).deleteById(any());
     }
 }

@@ -36,12 +36,23 @@ public class Tienda {
         return id;
     }
     
+    public void setId(Long id) {
+        this.id = id;
+    }
+    
     public String getCodigo() {
         return codigo;
     }
     
     public String getNombre() {
         return nombre;
+    }
+    
+    public void setNombre(String nombre) {
+        if (nombre == null || nombre.trim().isEmpty()) {
+            throw new IllegalArgumentException("El nombre no puede ser nulo o vacío");
+        }
+        this.nombre = nombre;
     }
     
     @Override

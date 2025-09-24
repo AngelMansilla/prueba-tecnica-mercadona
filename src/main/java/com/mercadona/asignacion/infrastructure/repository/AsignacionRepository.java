@@ -43,4 +43,8 @@ public interface AsignacionRepository extends JpaRepository<Asignacion, Long>, J
 
     @Query("SELECT COUNT(a) FROM Asignacion a WHERE a.seccion = :seccion")
     Long countBySeccion(@Param("seccion") Seccion seccion);
+
+    void deleteByTrabajadorTiendaId(Long tiendaId);
+
+    void deleteByTrabajador(Trabajador trabajador);
 }

@@ -74,6 +74,24 @@ public class Trabajador {
         return tienda;
     }
     
+    public void setId(Long id) {
+        this.id = id;
+    }
+    
+    public void setNombre(String nombre) {
+        if (nombre == null || nombre.trim().isEmpty()) {
+            throw new IllegalArgumentException("El nombre no puede ser nulo o vacío");
+        }
+        this.nombre = nombre;
+    }
+    
+    public void setHorasDisponibles(int horasDisponibles) {
+        if (horasDisponibles < 1 || horasDisponibles > 8) {
+            throw new IllegalArgumentException("Las horas disponibles deben estar entre 1 y 8");
+        }
+        this.horasDisponibles = horasDisponibles;
+    }
+    
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;

@@ -34,4 +34,6 @@ public interface TrabajadorRepository extends JpaRepository<Trabajador, Long>, J
 
     @Query("SELECT SUM(t.horasDisponibles) FROM Trabajador t WHERE t.tienda = :tienda")
     Integer sumHorasDisponiblesByTienda(@Param("tienda") Tienda tienda);
+
+    void deleteByTiendaId(Long tiendaId);
 }

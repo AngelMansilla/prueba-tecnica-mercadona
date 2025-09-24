@@ -18,4 +18,8 @@ public interface TiendaService {
     Long contarTiendas();
 
     boolean existeTienda(String codigo);
+
+    Tienda actualizarTienda(String codigo, String nuevoNombre);
+
+    void eliminarTienda(String codigo);
 }

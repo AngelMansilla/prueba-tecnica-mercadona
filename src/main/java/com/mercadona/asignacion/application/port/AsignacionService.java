@@ -30,4 +30,6 @@ public interface AsignacionService {
     boolean existeAsignacion(String dniTrabajador, String nombreSeccion);
 
     void eliminarAsignacion(String dniTrabajador, String nombreSeccion);
+
+    Asignacion actualizarHorasAsignacion(String dniTrabajador, String nombreSeccion, int nuevasHoras);
 }

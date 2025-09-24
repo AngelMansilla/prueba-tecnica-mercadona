@@ -60,8 +60,6 @@ class SeccionTest {
         Seccion horno = new Seccion("Horno", 8);          
         Seccion cajas = new Seccion("Cajas", 16);          
         Seccion pescaderia = new Seccion("Pescadería", 16);
-        Seccion verduras = new Seccion("Verduras", 16);
-        Seccion drogueria = new Seccion("Droguería", 16);
 
         assertEquals("Horno", horno.getNombre());
         assertEquals(8, horno.getHorasNecesarias());

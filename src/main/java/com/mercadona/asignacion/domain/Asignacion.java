@@ -60,6 +60,13 @@ public class Asignacion {
         return horasAsignadas;
     }
 
+    public void setHorasAsignadas(int horasAsignadas) {
+        if (horasAsignadas < 1 || horasAsignadas > 8) {
+            throw new IllegalArgumentException("Las horas asignadas deben estar entre 1 y 8");
+        }
+        this.horasAsignadas = horasAsignadas;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
